@@ -4,7 +4,7 @@
 
 
 
-# include <Servo.h>   // include the library of servo motor control
+#include <Servo.h>   // include the library of servo motor control
 // define the control pin of each motor
 const byte left_front = 46;
 const byte left_rear = 47;

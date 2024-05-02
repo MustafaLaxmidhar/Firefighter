@@ -1,18 +1,35 @@
 #include <Arduino.h>
+#include <SoftwareSerial.h>
+#include "Sonar.h"
+#include "Infrared.h"
+#include "Gyro.h"
+#include "ServoControl.h"
 
-// put function declarations here:
-int myFunction(int, int);
+// Serial Pointer
+HardwareSerial *SerialCom;
+
+// Gyro zero angle voltage
+static float gyro_zero_calibration;
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+ 
+  // Bluetooth
+  SerialCom = &Serial1;
+  SerialCom->begin(115200);
+
+  // neccessary setups
+  sonar_setup();
+  ir_setup();
+  servo_setup();
+
+  // Gyro
+  pinMode(A15, INPUT);
+  gyro_zero_calibration = gyro_calibration();
+
+  //start MSG
+  SerialCom->println("Start");
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  SerialCom->println("YOu are PRINTING");
 }

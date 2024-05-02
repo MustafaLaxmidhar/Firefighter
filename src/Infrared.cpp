@@ -4,6 +4,14 @@
 // IR Sensor Setup
 float dist_1, dist_2, dist_5, dist_6;
 
+void ir_setup() {
+  // IR Sensors
+  pinMode(A4, INPUT);
+  pinMode(A5, INPUT);
+  pinMode(A6, INPUT);  
+  pinMode(A7, INPUT);
+}
+
 inline void measure_dist1() {
 
   float current_mean = 0;

@@ -12,7 +12,7 @@ float gyro_calibration() {
 
   int sensorValue = 0;  // read out value of sensor
   float sum = 0;
-  float gyroZeroVoltage = 0;  // the value of voltage when gyro is zero
+  gyroZeroVoltage = 0;  // the value of voltage when gyro is zero
 
   for (int i = 0; i < 100; i++) {  //  read 100 values of voltage when gyro is at still, to calculate the zero-drift
     sensorValue = analogRead(A15);
@@ -36,7 +36,7 @@ float measure_gyro() {
   float angleChange = 0;
 
   // convert the 0-1023 signal to 0-5v
-  gyroRate = ((analogRead(A15) * 5) / 1023);
+  gyroRate = ((analogRead(gyro_pin) * 5) / 1023);
   //SerialCom->print("gyroRate is: ");
   //SerialCom->println(gyroRate);
 

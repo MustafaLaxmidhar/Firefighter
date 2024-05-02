@@ -6,6 +6,11 @@
 #define ECHO_PIN 49
 float sonar_dist = 0;
 
+void sonar_setup() {
+  pinMode(ECHO_PIN, INPUT);
+  pinMode(TRIG_PIN, OUTPUT);
+}
+
 float measureSonar() {  // returns raw sonar distance
 
   // Using USS to measure x position
