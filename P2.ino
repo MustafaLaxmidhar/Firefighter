@@ -1,15 +1,31 @@
 // Assign Fan pins
 // Decide layout of ALL sensors before full implementation
-// change serial_read_conditions to take in actual IR readings using P1 code
-
-
+// Add phototransistor reading function
+// rewrite avoid function
 
 # include <Servo.h>   // include the library of servo motor control
+#define TRIG_PIN 48
+#define ECHO_PIN 49
 // define the control pin of each motor
 const byte left_front = 46;
 const byte left_rear = 47;
 const byte right_rear = 50;
 const byte right_front = 51;
+
+float irdist_1, irdist_2, irdist_5, irdist_6;
+
+// define threshold of phototransistor  difference 
+int photo_dead_zone = 5;
+//  define the sensor reading results 
+ int photo_left ;
+ int photo_right;
+ int photo_three;
+ int photo_four;
+
+// USS Setup
+
+float sonar_dist;
+float measureSonar();
 
 // three machine states 
 enum STATE {
@@ -40,20 +56,7 @@ MOTION extinguish_command;
 int extinguish_output_flag;
 MOTION avoid_command;
 int avoid_output_flag;
-MOTION escape_command;
-int escape_output_flag;
 MOTION motor_input;
-// define threshold of phototransistor  difference 
-int photo_dead_zone = 5;
-//  define the sensor reading results 
- int photo_left ; // Have 2 more phototransistors
- int photo_right;
- int photo_three;
- int photo_four;
- int ir_detect;
- int bumper_left; // Other IR
- int bumper_right; // Other IR
- int  bumper_back; // Ultrasonic
 
 // create servo objects for each motor 
 Servo left_front_motor;
@@ -99,24 +102,24 @@ STATE running(){
   
 
    
-// this is just for test functions to read simulative                       sensor reading from monitor
-serial_read_conditions();  
+
 // four function 
 cruise(); 
 follow(); 
 extinguish();
 avoid(); 
-escape();
 // select the output command based on the function priority 
 arbitrate();
     photo_left = 0; 
     photo_right = 0;
     photo_three = 0;
     photo_four = 0;
-    ir_detect = 0; 
-    bumper_left = 0;
-    bumper_right = 0;
-    bumper_back = 0; 
+    irdist_1 = 0;
+    irdist_2 = 0;
+    irdist_5 = 0;
+    irdist_6 = 0;
+    sonar_dist = 0;
+    
   return RUNNING;   // return to RUNNING STATE again, it will run the RUNNING    
                    
 }                                                            // STATE REPEATLY 
@@ -186,31 +189,6 @@ void avoid()
      
  }
 
-
-//escape function output command and flag
-void escape()
-{ 
-//bumper_check();
-if (bumper_left && bumper_right)
-  {escape_output_flag=1;
-  escape_command=BACKWARD_LEFT_TURN;
- }
-else if (bumper_left)
-  {escape_output_flag=1;
-  escape_command=RIGHT_TURN;
-  }
-else if (bumper_right)
-  {escape_output_flag=1;
-  escape_command=LEFT_TURN;
-  }
-else if (bumper_back)
-  {escape_output_flag=1;
-  escape_command=LEFT_TURN;
-  }
-else
-  escape_output_flag=0;   
-}
-
 // check flag and select command based on priority 
 void arbitrate ()
  {
@@ -222,8 +200,6 @@ void arbitrate ()
   {motor_input=extinguish_command;}
   if (avoid_output_flag ==1)
   {motor_input=avoid_command;}
-  if (escape_output_flag==1)
-  {motor_input=escape_command;}
   robotMove();                                    
   }
 
@@ -272,38 +248,6 @@ switch(motor_input)
   delay(1000);
   }
 }
-// read simulative sensor reading   
-void serial_read_conditions()
-{
- char in_data[8];
-  if(Serial.available()>0)
-          {
-                for(int k = 0; k < 9; k++)    
-                {
-                   char c = Serial.read();
-                   in_data[k] = c;
-                   delay(2);
-                   Serial.flush();
-                }
-    int temp0 = in_data[0]-'0';
-    int temp1 = in_data[1]-'0';
-    int temp2 = in_data[2]-'0';
-    int temp3 = in_data[3]-'0';
-    int temp4 = in_data[4]-'0';
-    int temp5 = in_data[5]-'0';
-    int temp6 = in_data[6]-'0';
-    int temp7 = in_data[7]-'0';
-    
-    photo_left = 10*temp0 + temp1;    
-    photo_right = 10*temp2 + temp3;
-    ir_detect = temp4;
-    bumper_left = temp5;
-    bumper_right = temp6;
-    bumper_back = temp7;
-  }
-}
-
-
 
 void disable_motors(){                             // function disable all motors, called in  STOPPED STATE
   left_front_motor.detach();
@@ -381,3 +325,213 @@ void reverse_ccw()
   right_rear_motor.writeMicroseconds(1500 - speed_val);
   right_front_motor.writeMicroseconds(1500 - speed_val);
 }
+
+inline void measure_dist1() {
+
+  float current_mean = 0;
+  float previous_mean = 0;
+  float next_mean = 0;
+  float Sigmat = 0;
+  float Sigmat_next = 0;
+  float previous_sigma = 0;
+  double voltage = 0;
+
+  float Q = 1;
+  float R = 0.01;  // values closer to 1 cause faster convergence but less accurate
+
+  float Kt = 0;
+
+  float dist = 0;
+
+  float time1 = millis();
+  // Tweak the number of iterations
+  for (int i = 0; i < 60; i++) {
+    voltage = analogRead(A4);
+    dist = 10307 * pow(voltage, -0.847);
+
+    current_mean = previous_mean;
+    Sigmat = previous_sigma + R;
+
+    Kt = Sigmat / (Sigmat + Q);
+    next_mean = current_mean + Kt * (dist - current_mean);
+    Sigmat_next = (1 - Kt * Sigmat);
+
+    previous_sigma = Sigmat_next;
+    previous_mean = next_mean;
+  }
+
+  float time2 = millis();
+
+  float time = time2 - time1;
+  irdist_1 = next_mean;
+
+  if (irdist_1 != irdist_1) {
+    irdist_1 = 2000;
+  }
+}
+
+inline void measure_dist2() {
+
+  float current_mean = 0;
+  float previous_mean = 0;
+  float next_mean = 0;
+  float Sigmat = 0;
+  float Sigmat_next = 0;
+  float previous_sigma = 0;
+  double voltage = 0;
+
+  float Q = 1;
+  float R = 0.01;  // values closer to 1 cause faster convergence but less accurate
+
+  float Kt = 0;
+
+  float dist = 0;
+
+  float time1 = millis();
+  // Tweak the number of iterations
+  for (int i = 0; i < 60; i++) {
+
+    voltage = analogRead(A5);
+    dist = 9091.2 * pow(voltage, -0.825);
+
+    current_mean = previous_mean;
+    Sigmat = previous_sigma + R;
+
+    Kt = Sigmat / (Sigmat + Q);
+    next_mean = current_mean + Kt * (dist - current_mean);
+    Sigmat_next = (1 - Kt * Sigmat);
+
+    previous_sigma = Sigmat_next;
+    previous_mean = next_mean;
+  }
+
+  float time2 = millis();
+
+  float time = time2 - time1;
+  irdist_2 = next_mean;
+
+  if (irdist_2 != irdist_2) {
+    irdist_2 = 2000;
+  }
+
+  // SerialCom->print("Short 2 is: ");
+  // SerialCom->println(SHORT_irirdist_2);
+}
+
+inline void measure_dist5() {
+
+  float current_mean = 0;
+  float previous_mean = 0;
+  float next_mean = 0;
+  float Sigmat = 0;
+  float Sigmat_next = 0;
+  float previous_sigma = 0;
+  double voltage = 0;
+
+  float Q = 1;
+  float R = 0.01;  // values closer to 1 cause faster convergence but less accurate
+
+  float Kt = 0;
+
+  float dist = 0;
+
+  float time1 = millis();
+  // Tweak the number of iterations
+  for (int i = 0; i < 100; i++) {
+    voltage = analogRead(A6);
+    dist = 10 * 4302.7 * pow(voltage, -0.934);
+
+    current_mean = previous_mean;
+    Sigmat = previous_sigma + R;
+
+    Kt = Sigmat / (Sigmat + Q);
+    next_mean = current_mean + Kt * (dist - current_mean);
+    Sigmat_next = (1 - Kt * Sigmat);
+
+    previous_sigma = Sigmat_next;
+    previous_mean = next_mean;
+  }
+
+  float time2 = millis();
+
+  float time = time2 - time1;
+
+  //SerialCom->print("Time to estimate: ");
+  //SerialCom->println(time);
+  irdist_5 = next_mean - 50;
+
+  // SerialCom->print("Long 5 is: ");
+  // SerialCom->println(LONG_irdist_5);
+  // SerialCom->println(" ");
+}
+
+inline void measure_dist6() {
+
+  float current_mean = 0;
+  float previous_mean = 0;
+  float next_mean = 0;
+  float Sigmat = 0;
+  float Sigmat_next = 0;
+  float previous_sigma = 0;
+  double voltage = 0;
+
+  float Q = 1;
+  float R = 0.005;  // values closer to 1 cause faster convergence but less accurate
+
+  float Kt = 0;
+
+  float dist = 0;
+
+  float time1 = millis();
+
+  // Tweak the number of iterations
+  for (int i = 0; i < 100; i++) {
+    voltage = analogRead(A7);
+    dist = 10 * 5049.9 * pow(voltage, -1.006);
+
+    current_mean = previous_mean;
+    Sigmat = previous_sigma + R;
+
+    Kt = Sigmat / (Sigmat + Q);
+    next_mean = current_mean + Kt * (dist - current_mean);
+    Sigmat_next = (1 - Kt * Sigmat);
+
+    previous_sigma = Sigmat_next;
+    previous_mean = next_mean;
+  }
+
+  float time2 = millis();
+
+  float time = time2 - time1;
+
+  irdist_6 = next_mean;
+
+}
+
+float measureSonar() {  // returns raw sonar distance
+
+  // Using USS to measure x position
+  long startTime = 0;
+  long endTime = 0;
+
+jump:
+  // Trigger ultrasonic signal
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+
+  // Measure the time for the signal to return
+  while (digitalRead(ECHO_PIN) == LOW) { startTime = micros(); }
+
+  while (digitalRead(ECHO_PIN) == HIGH) { endTime = micros(); }
+
+  // Calculate distance in milliimeters
+  float pulseDuration = endTime - startTime;
+  sonar_dist = pulseDuration / 5.8;
+
+  delay(1);
+
+  return sonar_dist;
+}  
