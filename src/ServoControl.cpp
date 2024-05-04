@@ -20,6 +20,10 @@ Servo uss_servo;
 #define RIGHT 0
 #define LEFT 180
 
+// intialise speed values
+int speed_val = 100;
+int speed_change;
+
 void servo_setup() {
   // Attatch servo motors
   left_font_motor.attach(left_front);
@@ -27,4 +31,88 @@ void servo_setup() {
   right_rear_motor.attach(right_rear);
   right_font_motor.attach(right_front);
   uss_servo.attach(uss_servo_pin);
+}
+
+void speed_change_smooth()                  // change speed, called in RUNING STATE
+{
+  speed_val += speed_change;                  // speed value add on speed change 
+   if(speed_val > 500)                          // make sure speed change less than 1000
+   speed_val = 500;
+   speed_change = 0;    //make speed change equals 0 after updating the speed value 
+}
+
+void disable_motors(){                             // function disable all motors, called in  STOPPED STATE
+  left_front_motor.detach();
+  left_rear_motor.detach();
+  right_rear_motor.detach();
+  right_front_motor.detach();
+
+  pinMode(left_front,INPUT);                   // set pinMode for next step 
+  pinMode(left_rear,INPUT);
+  pinMode(right_rear,INPUT);
+  pinMode(right_front,INPUT);
+}
+
+void enable_motors() {                                //enable all motors, was called in INITIALZING SATE 
+  left_front_motor.attach(left_front);
+  left_rear_motor.attach(left_rear);
+  right_rear_motor.attach(right_rear);
+  right_front_motor.attach(right_front);
+}
+
+void stop(){                                                                // stop motors 
+  left_front_motor.writeMicroseconds(1500);
+  left_rear_motor.writeMicroseconds(1500);
+  right_rear_motor.writeMicroseconds(1500);
+  right_front_motor.writeMicroseconds(1500);
+}
+void forward(){                                                         // moving forward  
+  left_front_motor.writeMicroseconds(1500 + speed_val);
+  left_rear_motor.writeMicroseconds(1500 + speed_val);
+  right_rear_motor.writeMicroseconds(1500 - speed_val);
+  right_front_motor.writeMicroseconds(1500 - speed_val);
+}
+
+void reverse(){                                                                  // reverse  
+  left_front_motor.writeMicroseconds(1500 - speed_val);
+  left_rear_motor.writeMicroseconds(1500 - speed_val);
+  right_rear_motor.writeMicroseconds(1500 + speed_val);
+  right_front_motor.writeMicroseconds(1500 + speed_val);
+}
+void strafe_left(){                                                         // straight left  
+  left_front_motor.writeMicroseconds(1500 - speed_val);
+  left_rear_motor.writeMicroseconds(1500 + speed_val);
+  right_rear_motor.writeMicroseconds(1500 + speed_val);
+  right_front_motor.writeMicroseconds(1500 - speed_val);
+}
+void strafe_right(){                                                  //straight right  
+  left_front_motor.writeMicroseconds(1500 + speed_val);
+  left_rear_motor.writeMicroseconds(1500 - speed_val);
+  right_rear_motor.writeMicroseconds(1500 - speed_val);
+  right_front_motor.writeMicroseconds(1500 + speed_val);
+}
+void cw(){                                                                   //clockwise  
+  left_front_motor.writeMicroseconds(1500 + speed_val);
+  left_rear_motor.writeMicroseconds(1500 + speed_val);
+  right_rear_motor.writeMicroseconds(1500 + speed_val);
+  right_front_motor.writeMicroseconds(1500 + speed_val);
+}
+void ccw(){                                                              //anticlockwise  
+  left_front_motor.writeMicroseconds(1500 - speed_val);
+  left_rear_motor.writeMicroseconds(1500 - speed_val);
+  right_rear_motor.writeMicroseconds(1500 - speed_val);
+  right_front_motor.writeMicroseconds(1500 - speed_val);
+}
+
+void reverse_ccw()
+{
+  left_front_motor.writeMicroseconds(1500 - speed_val);
+  left_rear_motor.writeMicroseconds(1500 - speed_val);
+  right_rear_motor.writeMicroseconds(1500 + speed_val);
+  right_front_motor.writeMicroseconds(1500 + speed_val);
+  delay(500);
+  left_front_motor.writeMicroseconds(1500 - speed_val);
+  left_rear_motor.writeMicroseconds(1500 - speed_val);
+  right_rear_motor.writeMicroseconds(1500 - speed_val);
+  right_front_motor.writeMicroseconds(1500 - speed_val);
 }
