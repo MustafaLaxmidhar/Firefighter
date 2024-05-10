@@ -1,13 +1,13 @@
 #ifndef PHOTOTRANS_H_
 #define PHOTOTRANS_H_
 
-float voltGrey();
+int voltGrey();
 float distGrey();
-float voltPurple();
+int voltPurple();
 float distPurple();
-float voltGreen();
+int voltGreen();
 float distGreen();
-float voltBlue();
+int voltBlue();
 float distBlue();
 
 #endif
