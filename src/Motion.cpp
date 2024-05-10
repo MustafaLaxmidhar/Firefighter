@@ -19,11 +19,14 @@ void cruise()
 
 // follow function output command and flag
 void follow()
-{ int delta;
-  //int left_photo, right_photo, delta;
-    //left_photo=analog(1);
-   // right_photo=analog(0);
-    delta=photo_right - photo_left;
+{ //int delta;
+  float grey_photo, purple_photo, green_photo, blue_photo;
+  // For now im assuming Grey is front, purple is right, green is back, blue is left
+    grey_photo= readPhotoGrey();
+  // Do same for others
+    right_photo= ....
+    if 
+ /*delta=photo_right - photo_left;
     if (abs(delta)>photo_dead_zone)
       {if (delta>0)
         follow_command=LEFT_TURN;
@@ -32,7 +35,8 @@ void follow()
       follow_output_flag=1;
       }
     else
-      follow_output_flag=0;
+      follow_output_flag=0; */
+ 
              
 }
 
