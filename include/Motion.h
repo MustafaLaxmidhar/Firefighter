@@ -12,7 +12,8 @@ MOTION avoid_command();
 int avoid_output_flag;
 MOTION motor_input();
 
-void crusie();
+void bubbleSort(std::vector<int> &arr);
+void cruise();
 void follow();
 void extinguish();
 void avoid();
