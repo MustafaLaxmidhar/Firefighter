@@ -1,16 +1,16 @@
+#include <SoftwareSerial.h>
+#include <Arduino.h>
+#include "Motion.h"
+#include "ServoControl.h"
+#include "MachineState.h"
 
-// three machine states 
-enum STATE {
-  INITIALISING,
-  RUNNING, 
-  STOPPED
-};
+// Serial Pointer
+HardwareSerial *SerialCom;
 
 //====================================================================== functions with machine STATE outputs ====================================================//
 
 STATE initialising(){
   enable_motors();                                 // enable motors 
-  Serial.println("INITIALISING");        // print the current stage 
   return RUNNING;                               // return to RUNING STATE DIRECTLY 
 }
 
@@ -25,21 +25,12 @@ STATE running(){
   avoid(); 
   // select the output command based on the function priority 
   arbitrate();
-    photo_left = 0; 
-    photo_right = 0;
-    photo_three = 0;
-    photo_four = 0;
-    irdist_1 = 0;
-    irdist_2 = 0;
-    irdist_5 = 0;
-    irdist_6 = 0;
-    sonar_dist = 0;
     
   return RUNNING;   // return to RUNNING STATE again, it will run the RUNNING    
                    
 }                                                            // STATE REPEATLY 
 
-
 STATE stopped(){
 disable_motors();                           // disable the motors
+return STOPPED; 
 }

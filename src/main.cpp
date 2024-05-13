@@ -6,7 +6,7 @@
 #include "ServoControl.h"
 
 // Serial Pointer
-HardwareSerial *SerialCom;
+extern HardwareSerial *SerialCom;
 
 // Gyro zero angle voltage
 static float gyro_zero_calibration;

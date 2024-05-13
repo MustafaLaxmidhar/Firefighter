@@ -17,7 +17,7 @@ float measureSonar() {  // returns raw sonar distance
   long startTime = 0;
   long endTime = 0;
 
-jump:
+  jump:
   // Trigger ultrasonic signal
   digitalWrite(TRIG_PIN, LOW);
   delayMicroseconds(2);
@@ -33,6 +33,10 @@ jump:
   // Calculate distance in milliimeters
   float pulseDuration = endTime - startTime;
   sonar_dist = pulseDuration / 5.8;
+
+  if (sonar_dist < 0){
+    goto jump;
+  }
 
   delay(1);
 

@@ -1,21 +1,25 @@
 #ifndef MOTION_H
 #define MOTION_H
 
-// declare function output and function flag   
-MOTION cruise_command();
-int cruise_output_flag;
-MOTION follow_command();
-int follow_output_flag;
-MOTION extinguish_command();
-int extinguish_output_flag;
-MOTION avoid_command();
-int avoid_output_flag;
-MOTION motor_input();
+// define motions states
+enum MOTION
+{
+  FORWARD,
+  BACKWARD,
+  LEFT_TURN,
+  RIGHT_TURN,
+  LEFT_ARC,
+  RIGHT_ARC,
+  BACKWARD_LEFT_TURN,
+  STOP
+};
 
-void bubbleSort(std::vector<int> &arr);
 void cruise();
 void follow();
 void extinguish();
 void avoid();
+
+void arbitrate();
+void robot_move();
 
 #endif

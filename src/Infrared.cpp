@@ -1,5 +1,6 @@
 #include "Infrared.h"
 #include <Arduino.h>
+#include <math.h>
 
 // IR Sensor Setup
 float dist_1, dist_2, dist_5, dist_6;
@@ -12,7 +13,7 @@ void ir_setup() {
   pinMode(A7, INPUT);
 }
 
-inline void measure_dist1() {
+float measure_dist1() {
 
   float current_mean = 0;
   float previous_mean = 0;
@@ -56,7 +57,7 @@ inline void measure_dist1() {
   }
 }
 
-inline void measure_dist2() {
+float measure_dist2() {
 
   float current_mean = 0;
   float previous_mean = 0;
@@ -104,7 +105,7 @@ inline void measure_dist2() {
   // SerialCom->println(SHORT_DIST_2);
 }
 
-inline void measure_dist5() {
+float measure_dist5() {
 
   float current_mean = 0;
   float previous_mean = 0;
@@ -151,7 +152,7 @@ inline void measure_dist5() {
   // SerialCom->println(" ");
 }
 
-inline void measure_dist6() {
+float measure_dist6() {
 
   float current_mean = 0;
   float previous_mean = 0;
@@ -193,3 +194,5 @@ inline void measure_dist6() {
   dist_6 = next_mean;
 
 }
+
+

@@ -1,18 +1,19 @@
 #include "Phototransistor.h"
+#include <Arduino.h>
 
-int voltGrey(){
-  analogRead(whatever pin);
+int readLeft(){
+  return analogRead(A15);
 }
 
-int voltPurple(){
-  analogRead(whatever pin);
+int readRight(){
+  return analogRead(A14);
 }
 
-int voltGreen(){
-  analogRead(whatever pin);
+int readFront(){
+  return analogRead(A13);
 }
 
-int voltBlue(){
-  analogRead(whatever pin);
+int readBack(){
+  return analogRead(A12);
 }
 
