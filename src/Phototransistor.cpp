@@ -1,19 +1,19 @@
 #include "Phototransistor.h"
 #include <Arduino.h>
 
-int readLeft(){
+int read_left(){
   return analogRead(A15);
 }
 
-int readRight(){
+int read_right(){
   return analogRead(A14);
 }
 
-int readFront(){
+int read_front(){
   return analogRead(A13);
 }
 
-int readBack(){
+int read_back(){
   return analogRead(A12);
 }
 

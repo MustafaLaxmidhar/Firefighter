@@ -2,7 +2,7 @@
 #include "Infrared.h"
 #include "Sonar.h"
 
-int ir_detect() {
+int obstacle_detect() {
 
 float a = measure_dist6();       // Left
 float b = measure_dist2();       // Left Diagonal

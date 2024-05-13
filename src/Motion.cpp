@@ -54,12 +54,7 @@ void avoid()
 {
   int val;
   val = obstacle_detect();
-  if (val == 1)
-  {
-    avoid_output_flag = 1;
-    avoid_command = BACKWARD;
-  }
-  else if (val == 2)
+  if (val == 2)
   {
     avoid_output_flag = 1;
     avoid_command = RIGHT_ARC;
@@ -68,6 +63,11 @@ void avoid()
   {
     avoid_output_flag = 1;
     avoid_command = LEFT_ARC;
+  }
+  else if (val == 1)
+  {
+    avoid_output_flag = 1;
+    avoid_command = BACKWARD;
   }
   else
   {

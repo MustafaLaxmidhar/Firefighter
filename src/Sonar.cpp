@@ -11,7 +11,7 @@ void sonar_setup() {
   pinMode(TRIG_PIN, OUTPUT);
 }
 
-float measureSonar() {  // returns raw sonar distance
+float measure_sonar() {  // returns raw sonar distance
 
   // Using USS to measure x position
   long startTime = 0;

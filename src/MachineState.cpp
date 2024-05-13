@@ -31,6 +31,6 @@ STATE running(){
 }                                                            // STATE REPEATLY 
 
 STATE stopped(){
-disable_motors();                           // disable the motors
-return STOPPED; 
+  disable_motors();                           // disable the motors
+  return STOPPED; 
 }

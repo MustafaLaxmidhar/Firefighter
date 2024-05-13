@@ -2,9 +2,6 @@
 #include <Arduino.h>
 #include <math.h>
 
-// IR Sensor Setup
-float dist_1, dist_2, dist_5, dist_6;
-
 void ir_setup() {
   // IR Sensors
   pinMode(A4, INPUT);
@@ -30,7 +27,6 @@ float measure_dist1() {
 
   float dist = 0;
 
-  float time1 = millis();
   // Tweak the number of iterations
   for (int i = 0; i < 60; i++) {
     voltage = analogRead(A4);
@@ -47,14 +43,13 @@ float measure_dist1() {
     previous_mean = next_mean;
   }
 
-  float time2 = millis();
+  dist = next_mean;
 
-  float time = time2 - time1;
-  dist_1 = next_mean;
-
-  if (dist_1 != dist_1) {
-    dist_1 = 2000;
+  if (dist != dist) {
+    dist = 2000;
   }
+
+  return dist;
 }
 
 float measure_dist2() {
@@ -73,8 +68,7 @@ float measure_dist2() {
   float Kt = 0;
 
   float dist = 0;
-
-  float time1 = millis();
+  
   // Tweak the number of iterations
   for (int i = 0; i < 60; i++) {
 
@@ -92,17 +86,16 @@ float measure_dist2() {
     previous_mean = next_mean;
   }
 
-  float time2 = millis();
+  dist = next_mean;
 
-  float time = time2 - time1;
-  dist_2 = next_mean;
-
-  if (dist_2 != dist_2) {
-    dist_2 = 2000;
+  if (dist != dist) {
+    dist = 2000;
   }
 
   // SerialCom->print("Short 2 is: ");
   // SerialCom->println(SHORT_DIST_2);
+
+  return dist;
 }
 
 float measure_dist5() {
@@ -122,7 +115,6 @@ float measure_dist5() {
 
   float dist = 0;
 
-  float time1 = millis();
   // Tweak the number of iterations
   for (int i = 0; i < 100; i++) {
     voltage = analogRead(A6);
@@ -139,17 +131,13 @@ float measure_dist5() {
     previous_mean = next_mean;
   }
 
-  float time2 = millis();
+  dist = next_mean - 50;
 
-  float time = time2 - time1;
+  if (dist != dist) {
+    dist = 2000;
+  }
 
-  //SerialCom->print("Time to estimate: ");
-  //SerialCom->println(time);
-  dist_5 = next_mean - 50;
-
-  // SerialCom->print("Long 5 is: ");
-  // SerialCom->println(LONG_DIST_5);
-  // SerialCom->println(" ");
+  return dist;
 }
 
 float measure_dist6() {
@@ -169,8 +157,6 @@ float measure_dist6() {
 
   float dist = 0;
 
-  float time1 = millis();
-
   // Tweak the number of iterations
   for (int i = 0; i < 100; i++) {
     voltage = analogRead(A7);
@@ -187,12 +173,13 @@ float measure_dist6() {
     previous_mean = next_mean;
   }
 
-  float time2 = millis();
+  dist = next_mean;
 
-  float time = time2 - time1;
+  if (dist != dist) {
+    dist = 2000;
+  }
 
-  dist_6 = next_mean;
-
+  return dist;
 }
 
 

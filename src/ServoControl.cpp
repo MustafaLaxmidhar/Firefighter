@@ -1,13 +1,7 @@
 #include <Servo.h>
+#include "ServoControl.h"
 #include <Arduino.h>
-
-// Motor Setup
-// Default motor control pins
-#define left_front 46
-#define left_rear 47
-#define right_rear 50
-#define right_front 51
-#define uss_servo_pin 11
+#include "Phototransistor.h"
 
 Servo left_front_motor;   // create servo object to control Vex Motor Controller 29
 Servo left_rear_motor;   // create servo object to control Vex Motor Controller 29
@@ -15,13 +9,8 @@ Servo right_rear_motor;  // create servo object to control Vex Motor Controller 
 Servo right_front_motor;  // create servo object to control Vex Motor Controller 29
 Servo uss_servo;
 
-// Uss servo positions
-#define FRONT 83
-#define RIGHT 0
-#define LEFT 180
-
 // intialise speed values
-int speed_val = 100;
+int speed_val = 250;
 int speed_change;
 
 void servo_setup() {
@@ -31,6 +20,32 @@ void servo_setup() {
   right_rear_motor.attach(right_rear);
   right_front_motor.attach(right_front);
   uss_servo.attach(uss_servo_pin);
+}
+
+int fan_servo_calib() {
+  float a = read_front();  // Left
+  float b = read_left(); // Left Diagonal
+  float c = read_right(); // Right Diagonal
+  float d = read_back(); // Right
+
+  float highest = max(max(a, b), max(c, d));
+
+   if (highest == a) {
+    uss_servo.write(FRONT);
+    highest = 1;
+  } else if (highest == b) {
+    uss_servo.write(LEFT);
+    highest = 2;
+  } else if (highest == c) {
+    uss_servo.write(RIGHT);
+    highest = 3;
+  } else if (highest == d) {
+    uss_servo.write(45);
+    highest = 4;
+  }
+
+  return highest;
+  
 }
 
 void speed_change_smooth()                  // change speed, called in RUNING STATE
