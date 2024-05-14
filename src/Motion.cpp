@@ -16,11 +16,17 @@ MOTION avoid_command;
 int avoid_output_flag;
 int motor_input;
 
+// After reversing tell cruise to move left or right
+int reversed_flag;
+
 // cruise function output command and flag
 void cruise()
 {
   cruise_command = FORWARD;
   cruise_output_flag = 1;
+  if (reversed_flag) {
+    cruise_command = RIGHT_ARC;
+  }
 }
 
 // follow function output command and flag
@@ -68,6 +74,8 @@ void avoid()
   {
     avoid_output_flag = 1;
     avoid_command = BACKWARD;
+    reversed_flag = 1;
+
   }
   else
   {
