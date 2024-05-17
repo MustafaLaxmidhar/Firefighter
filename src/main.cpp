@@ -6,6 +6,8 @@
 #include "ServoControl.h"
 #include "Phototransistor.h"
 #include "MachineState.h"
+#include "Motion.h"
+#include "ObstacleDetect.h"
 
 // Serial Pointer
 extern HardwareSerial *SerialCom;
@@ -36,17 +38,17 @@ void setup()
 void loop()
 {
   // put your main code here, to run repeatedly:
-  static STATE machine_state = INITIALISING; // start from the sate INITIALIING
-  switch (machine_state)
-  {
+static STATE machine_state = INITIALISING;     // start from the sate INITIALIING 
+switch (machine_state)
+{
   case INITIALISING:
-    machine_state = initialising();
-    break;
+     machine_state = initialising();
+     break;
   case RUNNING:
-    machine_state = running();
-    break;
+     machine_state = running();
+     break;
   case STOPPED:
-    machine_state = stopped();
-    break;
-  }
+     machine_state = stopped();
+     break;
+}
 }

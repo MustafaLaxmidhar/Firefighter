@@ -19,7 +19,7 @@ STATE running(){
 
   speed_change_smooth();                 //function to speed up and slow down smoothly 
   // four function 
-  cruise(); 
+  cruise();
   follow(); 
   extinguish();
   avoid(); 
