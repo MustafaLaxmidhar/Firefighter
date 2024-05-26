@@ -37,6 +37,7 @@ void setup()
 
 void loop()
 {
+
   // put your main code here, to run repeatedly:
 static STATE machine_state = INITIALISING;     // start from the sate INITIALIING 
 switch (machine_state)
@@ -46,6 +47,16 @@ switch (machine_state)
      break;
   case RUNNING:
      machine_state = running();
+      float a = measure_dist6();       // Left 
+      float b = measure_dist2();       // Left Diagonal
+      float c = measure_dist1();       // Right Diagonal
+      float d = measure_dist5();       // Right
+      float e = measure_sonar();  
+      SerialCom->print("Left is: "); SerialCom->println(a);
+      SerialCom->print("Left Diag is: "); SerialCom->println(b);
+      SerialCom->print("Right Diag is: "); SerialCom->println(c);
+      SerialCom->print("Right is: "); SerialCom->println(d);
+      SerialCom->print("Front is: "); SerialCom->println(e);
      break;
   case STOPPED:
      machine_state = stopped();

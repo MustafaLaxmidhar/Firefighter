@@ -4,12 +4,12 @@
 
 int obstacle_detect() {
 
-int val = 0;
-float a = measure_dist6();       // Left
-float b = measure_dist2();       // Left Diagonal
-float c = measure_dist1();       // Right Diagonal
-float d = measure_dist5();       // Right
-float e = measure_sonar();       // Front
+    int val = 0;
+    float a = measure_dist6();       // Left 
+    float b = measure_dist2();       // Left Diagonal
+    float c = measure_dist1();       // Right Diagonal
+    float d = measure_dist5();       // Right
+    float e = measure_sonar();       // Front
 
     float threshold_distance = 150;     //Distance until an object is registered
 
@@ -23,21 +23,26 @@ float e = measure_sonar();       // Front
     if (e < threshold_distance) {
         front_obstacle = true;
     }
-    if (b < threshold_distance) {
+    if (b < threshold_distance && (b != 9999)) {
         left_obstacle = true;
     }
-    if (a < threshold_distance) {
+    if (a < threshold_distance && (a != 9999)) {
         left_obstacle = true;
     }
-    if (c < threshold_distance) {
+    if (c < threshold_distance && (c != 9999)) {
         right_obstacle = true;
     } 
-    if (d < threshold_distance) {
+    if (d < threshold_distance && (d != 9999)) {
         right_obstacle = true;
     }
     if (a < threshold_distance && d < threshold_distance) {
         side_obstacle = true;
     }
+    if (b < 250 && c < 250){
+        front_obstacle = true;
+    }
+
+
 
     // Arguments to move right (obstacle on the left)
     if (front_obstacle && a > d) {
@@ -58,6 +63,10 @@ float e = measure_sonar();       // Front
     // Argument to move back (boxed in on all sides)
     if (front_obstacle && right_obstacle && left_obstacle && side_obstacle) {
         val = 1;
+    }
+
+    if (front_obstacle){
+        val = 4;
     }
 
     return val;

@@ -44,17 +44,20 @@ void follow()
        }
      else
        follow_output_flag=0; */
+       follow_output_flag = 0;
 }
 
 // turn on fan until light goes out or for 10 seconds
 void extinguish()
 {
+  extinguish_output_flag = 0;
   extinguish_command = STOP;
 }
 
 // avoid function output command and flag
 void avoid()
 {
+
   int val;
   val = obstacle_detect();
   if (val == 2)
@@ -73,6 +76,10 @@ void avoid()
     avoid_command = BACKWARD;
     //reversed_flag = 1;
 
+  }else if (val == 4)
+  {
+    avoid_output_flag = 1;
+    avoid_command = BACKWARD_LEFT_TURN;
   }
   else
   {
@@ -91,13 +98,13 @@ void arbitrate()
   {
     motor_input = follow_command;
   }
-  if (extinguish_output_flag == 1)
-  {
-    motor_input = extinguish_command;
-  }
   if (avoid_output_flag == 1)
   {
     motor_input = avoid_command;
+  }
+  if (extinguish_output_flag == 1)
+  {
+    motor_input = extinguish_command;
   }
   robot_move();
 }
@@ -109,41 +116,41 @@ void robot_move()
   {
   case FORWARD:
     forward();
-    delay(1000);
+    delay(150);
     break;
 
   case BACKWARD:
     reverse();
-    delay(1000);
+    delay(150);
     break;
 
   case LEFT_TURN:
     ccw();
-    delay(1000);
+    delay(150);
     break;
 
   case RIGHT_TURN:
     cw();
-    delay(1000);
+    delay(150);
     break;
 
   case LEFT_ARC:
     strafe_left();
-    delay(1000);
+    delay(150);
     break;
 
   case RIGHT_ARC:
     strafe_right();
-    delay(1000);
+    delay(150);
     break;
 
   case BACKWARD_LEFT_TURN:
     reverse_ccw();
-    delay(1000);
+    delay(150);
     break;
 
   case STOP:
     stop();
-    delay(1000);
+    delay(150);
   }
 }

@@ -46,7 +46,7 @@ float measure_dist1() {
   dist = next_mean;
 
   if (dist != dist) {
-    dist = 2000;
+    dist = 9999;
   }
 
   return dist;
@@ -89,7 +89,7 @@ float measure_dist2() {
   dist = next_mean;
 
   if (dist != dist) {
-    dist = 2000;
+    dist = 9999;
   }
 
   // SerialCom->print("Short 2 is: ");
@@ -134,7 +134,7 @@ float measure_dist5() {
   dist = next_mean - 50;
 
   if (dist != dist) {
-    dist = 2000;
+    dist = 9999;
   }
 
   return dist;
@@ -176,7 +176,7 @@ float measure_dist6() {
   dist = next_mean;
 
   if (dist != dist) {
-    dist = 2000;
+    dist = 9999;
   }
 
   return dist;
