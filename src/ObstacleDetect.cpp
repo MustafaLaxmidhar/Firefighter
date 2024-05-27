@@ -1,6 +1,8 @@
 #include "ObstacleDetect.h"
 #include "Infrared.h"
 #include "Sonar.h"
+#include "Phototransistor.h"
+#include <stdlib.h>
 
 int obstacle_detect() {
 
@@ -71,4 +73,34 @@ int obstacle_detect() {
 
     return val;
 
+}
+
+int find_fire() {
+
+    // Read from all phototransistors
+    int val  = 0;
+    int right_front_PT = read_back();
+    int left = read_left();
+    int right = read_right();
+    int left_front_PT= read_front();
+
+    // Threshold above ambient room lighting
+    int threshold = 100;
+
+    if (abs(left_front_PT - right_front_PT) < 175 && right_front_PT > threshold)  // If front two read similar vals you are aligned
+    {
+        val = 0;
+        return val;
+    }
+    
+    // Align front of robot to fire
+    if (left > threshold || left_front_PT > threshold)                  // rotate left
+    {
+        val = 1;
+    }else if (right > threshold || right_front_PT > threshold)           // rotate right
+    {
+        val = 2;
+    }
+
+    return val;
 }

@@ -27,4 +27,7 @@ void strafe_right();
 void cw();
 void ccw();
 void reverse_ccw();
+void left_arc();
+void right_arc();
+
 #endif
