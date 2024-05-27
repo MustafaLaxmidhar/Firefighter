@@ -9,11 +9,11 @@ int read_right(){
   return analogRead(A14);
 }
 
-int read_front(){
+int front_left(){
   return analogRead(A13);
 }
 
-int read_back(){
+int front_right(){
   return analogRead(A12);
 }
 

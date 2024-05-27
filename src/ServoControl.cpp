@@ -23,32 +23,6 @@ void servo_setup() {
   uss_servo.attach(uss_servo_pin);
 }
 
-int fan_servo_calib() {
-  float a = read_front();  // Left
-  float b = read_left(); // Left Diagonal
-  float c = read_right(); // Right Diagonal
-  float d = read_back(); // Right
-
-  float highest = max(max(a, b), max(c, d));
-
-   if (highest == a) {
-    uss_servo.write(FRONT);
-    highest = 1;
-  } else if (highest == b) {
-    uss_servo.write(LEFT);
-    highest = 2;
-  } else if (highest == c) {
-    uss_servo.write(RIGHT);
-    highest = 3;
-  } else if (highest == d) {
-    uss_servo.write(45);
-    highest = 4;
-  }
-
-  return highest;
-  
-}
-
 void speed_change_smooth()                  // change speed, called in RUNING STATE
 {
   speed_val += speed_change;                  // speed value add on speed change 

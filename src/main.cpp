@@ -20,7 +20,7 @@ void setup()
 {
   //startup delay
   delay(5000);
-  
+
   // Bluetooth
   SerialCom = &Serial1;
   SerialCom->begin(115200);
@@ -41,6 +41,4 @@ void setup()
 void loop()
 {
   running();
-  SerialCom->print("diff front is: "); SerialCom->println((read_front() - read_back()));
-  SerialCom->println(" ");
 }

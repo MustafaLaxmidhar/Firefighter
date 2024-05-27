@@ -13,7 +13,7 @@ int obstacle_detect() {
     float d = measure_dist5();       // Right
     float e = measure_sonar();       // Front
 
-    float threshold_distance = 150;     //Distance until an object is registered
+    float threshold_distance = 110;     //Distance until an object is registered
 
     // Create flags for threshold being breached
     bool front_obstacle = false;
@@ -79,19 +79,14 @@ int find_fire() {
 
     // Read from all phototransistors
     int val  = 0;
-    int right_front_PT = read_back();
+    int right_front_PT = front_right();
     int left = read_left();
     int right = read_right();
-    int left_front_PT= read_front();
+    int left_front_PT= front_left();
+    float front_dist = measure_sonar();
 
     // Threshold above ambient room lighting
-    int threshold = 100;
-
-    if (abs(left_front_PT - right_front_PT) < 175 && right_front_PT > threshold)  // If front two read similar vals you are aligned
-    {
-        val = 0;
-        return val;
-    }
+    int threshold = 50;
     
     // Align front of robot to fire
     if (left > threshold || left_front_PT > threshold)                  // rotate left
@@ -100,6 +95,14 @@ int find_fire() {
     }else if (right > threshold || right_front_PT > threshold)           // rotate right
     {
         val = 2;
+    }
+    if (abs(left_front_PT - right_front_PT) < 200 && right_front_PT > threshold)  // If front two read similar vals you are aligned
+    {
+        val = 3;
+    }
+    if (front_dist < 120 && (left_front_PT > 400 || right_front_PT > 400))
+    {
+        val = 4;
     }
 
     return val;

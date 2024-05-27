@@ -55,8 +55,13 @@ void follow()
 // turn on fan until light goes out or for 10 seconds
 void extinguish()
 {
-  extinguish_output_flag = 0;
-  extinguish_command = STOP;
+  int val = find_fire();
+  if (val == 4)
+  {
+    extinguish_output_flag = 1;
+    extinguish_command = STOP;
+  }
+
 }
 
 // avoid function output command and flag
