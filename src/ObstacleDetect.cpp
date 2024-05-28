@@ -86,21 +86,22 @@ int find_fire() {
     float front_dist = measure_sonar();
 
     // Threshold above ambient room lighting
-    int threshold = 50;
+    int threshold = 250;
     
     // Align front of robot to fire
-    if (left > threshold || left_front_PT > threshold)                  // rotate left
+    if (left > threshold || left_front_PT > threshold)                  
     {
-        val = 1;
-    }else if (right > threshold || right_front_PT > threshold)           // rotate right
-    {
-        val = 2;
+        val = 1; // rotate left
     }
-    if (abs(left_front_PT - right_front_PT) < 200 && right_front_PT > threshold)  // If front two read similar vals you are aligned
+    if (right > threshold || right_front_PT > threshold)           
     {
-        val = 3;
+        val = 2; // rotate right
     }
-    if (front_dist < 120 && (left_front_PT > 400 || right_front_PT > 400))
+    if (abs(left_front_PT - right_front_PT) < 400 && (right_front_PT > 500 || left_front_PT > 500))  
+    {
+        val = 3; // Go straight
+    }
+    if (front_dist < 150 && (left_front_PT > 400 || right_front_PT > 400)) // Stop
     {
         val = 4;
     }
