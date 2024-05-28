@@ -42,17 +42,23 @@ void loop()
 {
   running();
   int val = find_fire();
-  int right_front_PT = front_right();
-  int left = read_left();
-  int right = read_right();
-  int left_front_PT = front_left();
+  // int right_front_PT = front_right();
+   int front_PT = read_front();
+  // int back_PT = read_back(); 
+  // int left_front_PT = front_left();
+  float front = measure_sonar();
+  float b = measure_dist2();       // Left Diagonal
+  float c = measure_dist1();       // Right Diagonal
 
   SerialCom->print("Val: "); SerialCom->println(val);
+  // SerialCom->print("right_front_PT is: "); SerialCom->println(right_front_PT);
+  SerialCom->print("front is: "); SerialCom->println(front_PT);
+  SerialCom->print("front dist is: "); SerialCom->println(front);
+  SerialCom->print("left diag dist is: "); SerialCom->println(b);
+  SerialCom->print("right diag dist is: "); SerialCom->println(c);
   SerialCom->println(" ");
-  SerialCom->print("right_front_PT is: "); SerialCom->println(right_front_PT);
-  SerialCom->print("right is: "); SerialCom->println(right);
-  SerialCom->print("left_front_PT is: "); SerialCom->println(left_front_PT);
-  SerialCom->print("left is: "); SerialCom->println(left);
-  SerialCom->println(" ");
-  
+  // SerialCom->print("left_front_PT is: "); SerialCom->println(left_front_PT);
+  // SerialCom->print("back is: "); SerialCom->println(back_PT);
+  // SerialCom->println(" ");
+  delay(50);
 }

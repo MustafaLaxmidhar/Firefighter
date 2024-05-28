@@ -20,7 +20,7 @@ int motor_input;
 // cruise function output command and flag
 void cruise()
 {
-  cruise_command = FORWARD;
+  cruise_command = LEFT_TURN;
   cruise_output_flag = 1;
 }
 
@@ -44,6 +44,11 @@ void follow()
     follow_output_flag = 1;
     follow_command = FORWARD;
   }
+  else if (val == 4)
+  {
+    follow_output_flag = 1;
+    follow_command = TURN_AROUND;
+  }
   else
   {
     follow_output_flag = 0;
@@ -54,7 +59,7 @@ void follow()
 void extinguish()
 {
   int val = find_fire();
-  if (val == 4)
+  if (val == 5)
   {
     extinguish_output_flag = 1;
     extinguish_command = STOP;
@@ -121,41 +126,47 @@ void robot_move()
   {
   case FORWARD:
     forward();
-    delay(150);
+    delay(50);
     break;
 
   case BACKWARD:
     reverse();
-    delay(150);
+    delay(50);
     break;
 
   case LEFT_TURN:
     ccw();
-    delay(50);
+    delay(25);
     break;
 
   case RIGHT_TURN:
     cw();
-    delay(50);
+    delay(25);
     break;
 
   case LEFT_ARC:
     strafe_left();
-    delay(150);
+    delay(50);
     break;
 
   case RIGHT_ARC:
     strafe_right();
-    delay(150);
+    delay(50);
     break;
 
   case BACKWARD_LEFT_TURN:
     reverse_ccw();
-    delay(150);
+    delay(50);
     break;
 
+  case TURN_AROUND:
+    turn_180();
+    delay(50);
+    break;
+  
   case STOP:
-    stop();
-    delay(150);
+   stop();
+   delay(50);
   }
 }
+

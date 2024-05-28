@@ -13,7 +13,8 @@ int obstacle_detect() {
     float d = measure_dist5();       // Right
     float e = measure_sonar();       // Front
 
-    float threshold_distance = 110;     //Distance until an object is registered
+    float threshold_distance = 100;     //Distance until an object is registered
+    float front_dist = 100;
 
     // Create flags for threshold being breached
     bool front_obstacle = false;
@@ -22,7 +23,7 @@ int obstacle_detect() {
     bool side_obstacle = false;
 
     // Check if sensors detect obstacle
-    if (e < threshold_distance) {
+    if (e < front_dist) {
         front_obstacle = true;
     }
     if (b < threshold_distance && (b != 9999)) {
@@ -40,7 +41,7 @@ int obstacle_detect() {
     if (a < threshold_distance && d < threshold_distance) {
         side_obstacle = true;
     }
-    if (b < 250 && c < 250){
+    if (b < 150 && c < 150){
         front_obstacle = true;
     }
 
@@ -79,32 +80,26 @@ int find_fire() {
 
     // Read from all phototransistors
     int val  = 0;
-    int right_front_PT = front_right();
-    int left = read_left();
-    int right = read_right();
-    int left_front_PT= front_left();
+    int a = read_front();
+    int b = front_right();
+    int c = front_left();
+    int d = read_back();
     float front_dist = measure_sonar();
 
-    // Threshold above ambient room lighting
-    int threshold = 250;
-    
-    // Align front of robot to fire
-    if (left > threshold || left_front_PT > threshold)                  
-    {
-        val = 1; // rotate left
+    // Compare all values to find the highest
+    if (a >= 1000 && front_dist < 100) {
+        val = 5;  // 'a' is the highest and within range
+    }else if (a >= b && a >= c && a >= d) {
+        val = 3;  // 'a' is the highest
+    } else if (b >= a && b >= c && b >= d) {
+        val = 2;  // 'b' is the highest
+    } else if (c >= a && c >= b && c >= d) {
+        val = 1;  // 'c' is the highest
+    } else if (d >= a && d >= b && d >= c) {
+        val = 4;  // 'd' is the highest
     }
-    if (right > threshold || right_front_PT > threshold)           
-    {
-        val = 2; // rotate right
-    }
-    if (abs(left_front_PT - right_front_PT) < 400 && (right_front_PT > 500 || left_front_PT > 500))  
-    {
-        val = 3; // Go straight
-    }
-    if (front_dist < 150 && (left_front_PT > 400 || right_front_PT > 400)) // Stop
-    {
-        val = 4;
-    }
+
+    // If 'a' is the highest, 'val' remains 3
 
     return val;
 }
