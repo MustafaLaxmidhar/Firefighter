@@ -11,7 +11,7 @@ Servo uss_servo;
 
 // intialise speed values
 int speed_val = 175;
-int turn_val = 100;
+int turn_val = 75;
 int speed_change;
 
 void servo_setup() {
@@ -112,5 +112,18 @@ void turn_180() {
   left_rear_motor.writeMicroseconds(1500 - speed_val);
   right_rear_motor.writeMicroseconds(1500 - speed_val);
   right_front_motor.writeMicroseconds(1500 - speed_val);
-  delay(1000);
+  delay(2500);
+}
+
+void turn_fan(int val) {
+  
+  if (val == 1) {
+    uss_servo.write(90);
+  }
+  if (val == 2) {
+    uss_servo.write(60);
+  }
+  if (val == 3) {
+    uss_servo.write(120);
+  }
 }

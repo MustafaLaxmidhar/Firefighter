@@ -59,10 +59,27 @@ void follow()
 void extinguish()
 {
   int val = find_fire();
+  int fan_direction = find_max_light();
+  
+  if (val == 6)
+  {
+    extinguish_output_flag = 1;
+    extinguish_command = RIGHT_TURN;
+  } 
+  if (val == 7)
+  {
+    extinguish_output_flag = 1;
+    extinguish_command = LEFT_TURN;
+  }
   if (val == 5)
   {
     extinguish_output_flag = 1;
     extinguish_command = STOP;
+    turn_fan(fan_direction);
+  }
+  else 
+  {
+    extinguish_output_flag = 0;
   }
 
 }
@@ -89,7 +106,7 @@ void avoid()
   }else if (val == 4)
   {
     avoid_output_flag = 1;
-    avoid_command = BACKWARD_LEFT_TURN;
+    avoid_command = LEFT_TURN;
   }
   else
   {

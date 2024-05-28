@@ -89,7 +89,7 @@ int find_fire() {
     // Compare all values to find the highest
     if (a >= 1000 && front_dist < 100) {
         val = 5;  // 'a' is the highest and within range
-    }else if (a >= b && a >= c && a >= d) {
+    } else if (a >= b && a >= c && a >= d) {
         val = 3;  // 'a' is the highest
     } else if (b >= a && b >= c && b >= d) {
         val = 2;  // 'b' is the highest
@@ -100,6 +100,25 @@ int find_fire() {
     }
 
     // If 'a' is the highest, 'val' remains 3
+
+    return val;
+}
+
+int find_max_light() {
+
+    int val  = 0;
+    int a = read_front();
+    int b = front_right();
+    int c = front_left();
+
+    // Compare a, b, and c to find the highest
+    if (a >= b && a >= c) {
+        val = 1;  // 'a' is the highest
+    } else if (b >= a && b >= c) {
+        val = 2;  // 'b' is the highest
+    } else if (c >= a && c >= b) {
+        val = 3;  // 'c' is the highest
+    }
 
     return val;
 }

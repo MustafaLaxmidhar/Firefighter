@@ -27,5 +27,6 @@ void cw();
 void ccw();
 void reverse_ccw();
 void turn_180();
+void turn_fan(int val);
 
 #endif
