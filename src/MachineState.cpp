@@ -7,6 +7,12 @@
 // Serial Pointer
 HardwareSerial *SerialCom;
 
+// Previous State holder
+bool extinguish_flag = false;
+bool previous_extinguish_flag = false;
+
+int iLikeDick = 0;
+
 //====================================================================== functions with machine STATE outputs ====================================================//
 
 STATE initialising(){
@@ -23,7 +29,22 @@ STATE running(){
   extinguish();
   avoid(); 
   // select the output command based on the function priority 
-  arbitrate();
+  int state = arbitrate();
+
+  previous_extinguish_flag = extinguish_flag;
+
+  if (state == 4) {
+    extinguish_flag = true;
+  }else {
+    extinguish_flag = false;
+  }
+
+  if (!extinguish_flag && previous_extinguish_flag) {
+    iLikeDick++;
+  }
+  if (iLikeDick == 2) {
+    return STOPPED;
+  }
     
   return RUNNING;   // return to RUNNING STATE again, it will run the RUNNING    
                    

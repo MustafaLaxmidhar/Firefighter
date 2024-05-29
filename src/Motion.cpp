@@ -12,6 +12,7 @@ MOTION follow_command;
 int follow_output_flag;
 MOTION extinguish_command;
 int extinguish_output_flag;
+int prev_extinguist_output_flag;
 MOTION avoid_command;
 int avoid_output_flag;
 int motor_input;
@@ -110,25 +111,31 @@ void avoid()
 }
 
 // check flag and select command based on priority
-void arbitrate()
+int arbitrate()
 {
+  int val = 0;
   if (cruise_output_flag == 1)
   {
     motor_input = cruise_command;
+    val = 1;
   }
   if (follow_output_flag == 1)
   {
     motor_input = follow_command;
+    val = 2;
   }
   if (avoid_output_flag == 1)
   {
     motor_input = avoid_command;
+    val = 3;
   }
   if (extinguish_output_flag == 1)
   {
     motor_input = extinguish_command;
+    val = 4;
   }
   robot_move();
+  return val;
 }
 
 // connect the selected commands to the robot motions

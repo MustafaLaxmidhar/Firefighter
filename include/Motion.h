@@ -20,7 +20,7 @@ void follow();
 void extinguish();
 void avoid();
 
-void arbitrate();
+int arbitrate();
 void robot_move();
 
 #endif
