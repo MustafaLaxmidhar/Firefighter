@@ -1,5 +1,6 @@
 #include "ObstacleDetect.h"
 #include "Infrared.h"
+#include "Phototransistor.h"
 #include "Sonar.h"
 
 int obstacle_detect() {
@@ -62,4 +63,25 @@ float e = measure_sonar();       // Front
 
     return val;
 
+}
+
+int find_fire() 
+{
+    int a = read_left();
+    int b = read_right();
+    int c = read_front();
+    int d = read_back();
+
+
+    int max = a; // Assume 'a' is the largest initially
+    int val = 2
+
+    if (b > max) {
+        val = 1;
+    }
+    if (d > max) {
+        val = 3;
+    }
+
+    return val;
 }

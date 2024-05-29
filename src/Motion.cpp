@@ -28,22 +28,28 @@ void cruise()
 
 // follow function output command and flag
 void follow()
-{ // int delta;
-  //float grey_photo, purple_photo, green_photo, blue_photo;
-  // For now im assuming Grey is front, purple is right, green is back, blue is left
-  //grey_photo = readPhotoGrey();
-  // Do same for others
-  //right_photo = ....if
-  /*delta=photo_right - photo_left;
-     if (abs(delta)>photo_dead_zone)
-       {if (delta>0)
-         follow_command=LEFT_TURN;
-       else
-         follow_command=RIGHT_TURN;
-       follow_output_flag=1;
-       }
-     else
-       follow_output_flag=0; */
+{ 
+  int val;
+  val = find_fire();
+  if (val == 1)
+  {
+    follow_output_flag = 1;
+    avoid_command = RIGHT_ARC;
+  }
+  else if (val == 2)
+  {
+    follow_output_flag = 1;
+    avoid_command = LEFT_ARC;
+  }
+  else if (val == 3)
+  {
+    follow_output_flag = 1;
+    avoid_command = LEFT_ARC;
+  }
+  else
+  {
+    follow_output_flag = 0;
+  }
 }
 
 // turn on fan until light goes out or for 10 seconds
@@ -71,8 +77,6 @@ void avoid()
   {
     avoid_output_flag = 1;
     avoid_command = BACKWARD;
-    //reversed_flag = 1;
-
   }
   else
   {
@@ -91,14 +95,15 @@ void arbitrate()
   {
     motor_input = follow_command;
   }
-  if (extinguish_output_flag == 1)
-  {
-    motor_input = extinguish_command;
-  }
   if (avoid_output_flag == 1)
   {
     motor_input = avoid_command;
   }
+  if (extinguish_output_flag == 1)
+  {
+    motor_input = extinguish_command;
+  }
+
   robot_move();
 }
 
