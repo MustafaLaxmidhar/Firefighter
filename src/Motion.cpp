@@ -61,25 +61,17 @@ void extinguish()
   int val = find_fire();
   int fan_direction = find_max_light();
   
-  if (val == 6)
-  {
-    extinguish_output_flag = 1;
-    extinguish_command = RIGHT_TURN;
-  } 
-  if (val == 7)
-  {
-    extinguish_output_flag = 1;
-    extinguish_command = LEFT_TURN;
-  }
   if (val == 5)
   {
     extinguish_output_flag = 1;
     extinguish_command = STOP;
     turn_fan(fan_direction);
+    digitalWrite(FAN_PIN, HIGH);
   }
   else 
   {
     extinguish_output_flag = 0;
+    digitalWrite(FAN_PIN, LOW);
   }
 
 }
@@ -107,6 +99,9 @@ void avoid()
   {
     avoid_output_flag = 1;
     avoid_command = LEFT_TURN;
+  }else if (val == 7 ){
+    avoid_output_flag = 1;
+    avoid_command = STOP;
   }
   else
   {
@@ -143,7 +138,7 @@ void robot_move()
   {
   case FORWARD:
     forward();
-    delay(50);
+    delay(25);
     break;
 
   case BACKWARD:

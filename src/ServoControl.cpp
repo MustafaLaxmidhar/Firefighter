@@ -10,8 +10,8 @@ Servo right_front_motor;  // create servo object to control Vex Motor Controller
 Servo uss_servo;
 
 // intialise speed values
-int speed_val = 175;
-int turn_val = 75;
+int speed_val = 175;    //175
+int turn_val = 85;      //75
 int speed_change;
 
 void servo_setup() {
