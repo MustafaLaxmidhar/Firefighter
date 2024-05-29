@@ -14,8 +14,8 @@ int obstacle_detect() {
     float e = measure_sonar();       // Front
     int f = read_front();           // Front PT
 
-    float threshold_distance = 120;     //Distance until an object is registered
-    float front_dist = 120;
+    float diag_threshold = 125;     //Distance until an object is registered
+    float front_threshold = 120;
     float side_threshold = 90;
 
     // Create flags for threshold being breached
@@ -25,16 +25,16 @@ int obstacle_detect() {
     bool side_obstacle = false;
 
     // Check if sensors detect obstacle
-    if (e < front_dist) {
+    if (e < front_threshold) {
         front_obstacle = true;
     }
-    if (b < side_threshold && (b != 9999)) {
+    if (b < diag_threshold && (b != 9999)) {
         left_obstacle = true;
     }
     if (a < side_threshold && (a != 9999)) {
         left_obstacle = true;
     }
-    if (c < side_threshold && (c != 9999)) {
+    if (c < diag_threshold && (c != 9999)) {
         right_obstacle = true;
     } 
     if (d < side_threshold && (d != 9999)) {
