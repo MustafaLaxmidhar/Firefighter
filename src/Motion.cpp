@@ -100,7 +100,8 @@ void avoid()
   {
     avoid_output_flag = 1;
     avoid_command = LEFT_TURN;
-  }else if (val == 7 ){
+  }else if (val == 7 )
+  {
     avoid_output_flag = 1;
     avoid_command = STOP;
   }
@@ -145,7 +146,7 @@ void robot_move()
   {
   case FORWARD:
     forward();
-    delay(25);
+    delay(10);
     break;
 
   case BACKWARD:

@@ -14,8 +14,9 @@ int obstacle_detect() {
     float e = measure_sonar();       // Front
     int f = read_front();           // Front PT
 
-    float threshold_distance = 75;     //Distance until an object is registered
-    float front_dist = 100;
+    float threshold_distance = 120;     //Distance until an object is registered
+    float front_dist = 120;
+    float side_threshold = 90;
 
     // Create flags for threshold being breached
     bool front_obstacle = false;
@@ -27,19 +28,19 @@ int obstacle_detect() {
     if (e < front_dist) {
         front_obstacle = true;
     }
-    if (b < threshold_distance && (b != 9999)) {
+    if (b < side_threshold && (b != 9999)) {
         left_obstacle = true;
     }
-    if (a < threshold_distance && (a != 9999)) {
+    if (a < side_threshold && (a != 9999)) {
         left_obstacle = true;
     }
-    if (c < threshold_distance && (c != 9999)) {
+    if (c < side_threshold && (c != 9999)) {
         right_obstacle = true;
     } 
-    if (d < threshold_distance && (d != 9999)) {
+    if (d < side_threshold && (d != 9999)) {
         right_obstacle = true;
     }
-    if (a < threshold_distance && d < threshold_distance) {
+    if (a < side_threshold && d < side_threshold) {
         side_obstacle = true;
     }
     if (b < 100 && c < 100){
@@ -70,7 +71,7 @@ int obstacle_detect() {
     if (front_obstacle) {
         val = 4;
     }
-    if (f >= 1000 && e < 150) {
+    if (f >= 995 && e < 110) {
         val = 7;
     }
 
@@ -89,7 +90,7 @@ int find_fire() {
     float front_dist = measure_sonar();
 
     // Compare all values to find the highest
-    if (a >= 1000 && front_dist < 150) {
+    if (a >= 995 && front_dist < 110) {
         val = 5;  // FRONT is the highest and within range
     } else if (a >= b && a >= c && a >= d) {
         val = 3;  // FRONT is the highest
@@ -99,6 +100,8 @@ int find_fire() {
         val = 1;  // LEFT is the highest
     } else if (d >= a && d >= b && d >= c) {
         val = 4;  // BACK is the highest
+    } else if (abs(b-c) < 300){
+        val = 4; // Check if the left/right PT are sensing similar vals and rotates
     }
 
     return val;

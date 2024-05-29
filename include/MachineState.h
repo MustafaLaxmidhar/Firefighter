@@ -12,4 +12,6 @@ STATE initialising();
 STATE running();
 STATE stopped();
 
+int getFireCounts();
+
 #endif

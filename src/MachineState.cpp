@@ -54,3 +54,7 @@ STATE stopped(){
   disable_motors();                           // disable the motors
   return STOPPED; 
 }
+
+int getFireCounts(){
+  return iLikeDick;
+}
