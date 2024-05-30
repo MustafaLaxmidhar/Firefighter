@@ -17,6 +17,8 @@ MOTION avoid_command;
 int avoid_output_flag;
 int motor_input;
 
+int i = 0;
+
 
 // cruise function output command and flag
 void cruise()
