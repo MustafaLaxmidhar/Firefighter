@@ -71,7 +71,7 @@ int obstacle_detect() {
     if (front_obstacle) {
         val = 4;
     }
-    if (f >= 990 && e < 100) {
+    if (f >= 994 && e < 115) {
         val = 7;
     }
 
@@ -86,11 +86,11 @@ int find_fire() {
     int a = read_front();
     int b = front_right();
     int c = front_left();
-    int d = read_back();
+    int d = read_back() - 5;
     float front_dist = measure_sonar();
 
     // Compare all values to find the highest
-    if (a >= 990 && front_dist < 100) {
+    if ( (a >= 994 || b>=994 || c>= 994) && front_dist < 120) {
         val = 5;  // FRONT is the highest and within range
     } else if (a >= b && a >= c && a >= d) {
         val = 3;  // FRONT is the highest
@@ -100,8 +100,8 @@ int find_fire() {
         val = 1;  // LEFT is the highest
     } else if (d >= a && d >= b && d >= c) {
         val = 4;  // BACK is the highest
-    } else if (abs(b-c) < 100){
-        val = 2; // Check if the left/right PT are sensing similar vals and rotates right
+    } else if (abs(b-c) < 300){
+        val = 1; // Check if the left/right PT are sensing similar vals and rotates right
     }
 
     return val;

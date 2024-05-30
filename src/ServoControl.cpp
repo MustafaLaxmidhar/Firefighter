@@ -10,8 +10,8 @@ Servo right_front_motor;  // create servo object to control Vex Motor Controller
 Servo uss_servo;
 
 // intialise speed values
-int speed_val = 165;    //175
-int turn_val = 95;      //75
+int speed_val = 165;    //165
+int turn_val = 105;      //95
 int speed_change;
 
 void servo_setup() {
@@ -112,7 +112,7 @@ void turn_180() {
   left_rear_motor.writeMicroseconds(1500 - 175);
   right_rear_motor.writeMicroseconds(1500 - 175);
   right_front_motor.writeMicroseconds(1500 - 175);
-  delay(2500);
+  delay(2300);
 }
 
 void turn_fan(int val) {

@@ -26,8 +26,9 @@ STATE running(){
   // four function 
   cruise();
   follow(); 
+  avoid();
   extinguish();
-  avoid(); 
+ 
   // select the output command based on the function priority 
   int state = arbitrate();
 
@@ -35,7 +36,7 @@ STATE running(){
 
   if (state == 4) {
     extinguish_flag = true;
-    delay(50);
+    delay(1000);
   }else {
     extinguish_flag = false;
   }
