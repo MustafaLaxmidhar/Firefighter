@@ -16,7 +16,7 @@ int obstacle_detect() {
 
     float diag_threshold = 90;     //Distance until an object is registered
     float front_threshold = 120;
-    float side_threshold = 90;
+    float side_threshold = 70;
 
     // Create flags for threshold being breached
     bool front_obstacle = false;
