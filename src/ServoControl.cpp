@@ -10,7 +10,7 @@ Servo right_front_motor;  // create servo object to control Vex Motor Controller
 Servo uss_servo;
 
 // intialise speed values
-int speed_val = 175;    //175
+int speed_val = 140;    //175
 int turn_val = 85;      //75
 int speed_change;
 
@@ -108,10 +108,10 @@ void reverse_ccw()
 }
 
 void turn_180() {
-  left_front_motor.writeMicroseconds(1500 - speed_val);
-  left_rear_motor.writeMicroseconds(1500 - speed_val);
-  right_rear_motor.writeMicroseconds(1500 - speed_val);
-  right_front_motor.writeMicroseconds(1500 - speed_val);
+  left_front_motor.writeMicroseconds(1500 - 175);
+  left_rear_motor.writeMicroseconds(1500 - 175);
+  right_rear_motor.writeMicroseconds(1500 - 175);
+  right_front_motor.writeMicroseconds(1500 - 175);
   delay(2500);
 }
 

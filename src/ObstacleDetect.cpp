@@ -14,7 +14,7 @@ int obstacle_detect() {
     float e = measure_sonar();       // Front
     int f = read_front();           // Front PT
 
-    float diag_threshold = 125;     //Distance until an object is registered
+    float diag_threshold = 90;     //Distance until an object is registered
     float front_threshold = 120;
     float side_threshold = 90;
 
@@ -100,8 +100,8 @@ int find_fire() {
         val = 1;  // LEFT is the highest
     } else if (d >= a && d >= b && d >= c) {
         val = 4;  // BACK is the highest
-    } else if (abs(b-c) < 300){
-        val = 4; // Check if the left/right PT are sensing similar vals and rotates
+    } else if (abs(b-c) < 100){
+        val = 2; // Check if the left/right PT are sensing similar vals and rotates right
     }
 
     return val;
