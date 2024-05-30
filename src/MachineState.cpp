@@ -35,6 +35,7 @@ STATE running(){
 
   if (state == 4) {
     extinguish_flag = true;
+    delay(50);
   }else {
     extinguish_flag = false;
   }

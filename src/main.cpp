@@ -59,15 +59,15 @@ void loop()
   float c = measure_dist1();       // Right Diagonal
 
   SerialCom->println("------------------------------------");
-  SerialCom->print("Obstacle: "); SerialCom->println(val);
-  SerialCom->print("FindFire: "); SerialCom->println(val2);
+  // SerialCom->print("Obstacle: "); SerialCom->println(val);
+  // SerialCom->print("FindFire: "); SerialCom->println(val2);
   SerialCom->print("right_front_PT is: "); SerialCom->println(right_front_PT);
   SerialCom->print("left_front_PT is: "); SerialCom->println(left_front_PT);
   SerialCom->print("back is: "); SerialCom->println(back_PT);
   SerialCom->print("front is: "); SerialCom->println(front_PT);
-  SerialCom->print("front dist is: "); SerialCom->println(front);
-  SerialCom->print("left diag dist is: "); SerialCom->println(b);
-  SerialCom->print("right diag dist is: "); SerialCom->println(c);
+  // SerialCom->print("front dist is: "); SerialCom->println(front);
+  // SerialCom->print("left diag dist is: "); SerialCom->println(b);
+  // SerialCom->print("right diag dist is: "); SerialCom->println(c);
   SerialCom->print("Fire Counts is: "); SerialCom->println(getFireCounts());
   //SerialCom->print("Diff left right is: "); SerialCom->println(abs(right_front_PT-left_front_PT));
   SerialCom->println(" ");

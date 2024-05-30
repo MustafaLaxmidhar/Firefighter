@@ -168,12 +168,12 @@ void robot_move()
 
   case LEFT_ARC:
     strafe_left();
-    delay(10);
+    delay(25);
     break;
 
   case RIGHT_ARC:
     strafe_right();
-    delay(10);
+    delay(25);
     break;
 
   case BACKWARD_LEFT_TURN:
