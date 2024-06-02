@@ -16,35 +16,38 @@ MOTION avoid_command;
 int avoid_output_flag;
 int motor_input;
 
-// After reversing tell cruise to move left or right
-int reversed_flag;
 
 // cruise function output command and flag
 void cruise()
 {
-  cruise_command = FORWARD;
+  cruise_command = LEFT_TURN;
   cruise_output_flag = 1;
 }
 
 // follow function output command and flag
 void follow()
 { 
-  int val;
-  val = find_fire();
+  int val = find_fire();
+
   if (val == 1)
   {
     follow_output_flag = 1;
-    avoid_command = RIGHT_ARC;
+    follow_command = LEFT_TURN;
   }
   else if (val == 2)
   {
     follow_output_flag = 1;
-    avoid_command = LEFT_ARC;
+    follow_command = RIGHT_TURN;
   }
   else if (val == 3)
   {
     follow_output_flag = 1;
-    avoid_command = LEFT_ARC;
+    follow_command = FORWARD;
+  }
+  else if (val == 4)
+  {
+    follow_output_flag = 1;
+    follow_command = TURN_AROUND;
   }
   else
   {
@@ -55,7 +58,30 @@ void follow()
 // turn on fan until light goes out or for 10 seconds
 void extinguish()
 {
-  extinguish_command = STOP;
+  int val = find_fire();
+  int fan_direction = find_max_light();
+  
+  if (val == 6)
+  {
+    extinguish_output_flag = 1;
+    extinguish_command = RIGHT_TURN;
+  } 
+  if (val == 7)
+  {
+    extinguish_output_flag = 1;
+    extinguish_command = LEFT_TURN;
+  }
+  if (val == 5)
+  {
+    extinguish_output_flag = 1;
+    extinguish_command = STOP;
+    turn_fan(fan_direction);
+  }
+  else 
+  {
+    extinguish_output_flag = 0;
+  }
+
 }
 
 // avoid function output command and flag
@@ -77,6 +103,10 @@ void avoid()
   {
     avoid_output_flag = 1;
     avoid_command = BACKWARD;
+  }else if (val == 4)
+  {
+    avoid_output_flag = 1;
+    avoid_command = LEFT_TURN;
   }
   else
   {
@@ -103,7 +133,6 @@ void arbitrate()
   {
     motor_input = extinguish_command;
   }
-
   robot_move();
 }
 
@@ -114,41 +143,47 @@ void robot_move()
   {
   case FORWARD:
     forward();
-    delay(1000);
+    delay(50);
     break;
 
   case BACKWARD:
     reverse();
-    delay(1000);
+    delay(50);
     break;
 
   case LEFT_TURN:
     ccw();
-    delay(1000);
+    delay(25);
     break;
 
   case RIGHT_TURN:
     cw();
-    delay(1000);
+    delay(25);
     break;
 
   case LEFT_ARC:
     strafe_left();
-    delay(1000);
+    delay(50);
     break;
 
   case RIGHT_ARC:
     strafe_right();
-    delay(1000);
+    delay(50);
     break;
 
   case BACKWARD_LEFT_TURN:
     reverse_ccw();
-    delay(1000);
+    delay(50);
     break;
 
+  case TURN_AROUND:
+    turn_180();
+    delay(50);
+    break;
+  
   case STOP:
-    stop();
-    delay(1000);
+   stop();
+   delay(50);
   }
 }
+

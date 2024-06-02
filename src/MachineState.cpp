@@ -16,7 +16,6 @@ STATE initialising(){
 
 STATE running(){
   //read_serial_command();                      // read command from serial communication 
-
   speed_change_smooth();                 //function to speed up and slow down smoothly 
   // four function 
   cruise();

@@ -14,7 +14,6 @@
 #define right_front 51
 #define uss_servo_pin 11
 
-int fan_servo_calib();
 void servo_setup();
 void speed_change_smooth();
 void disable_motors();
@@ -27,4 +26,7 @@ void strafe_right();
 void cw();
 void ccw();
 void reverse_ccw();
+void turn_180();
+void turn_fan(int val);
+
 #endif
